@@ -13,6 +13,7 @@ const apiKey = document.getElementById('api-key');
 const apiKeyGroup = document.getElementById('api-key-group');
 const modelName = document.getElementById('model-name');
 const targetUrl = document.getElementById('target-url');
+const backendUrl = document.getElementById('backend-url');
 const maxSteps = document.getElementById('max-steps');
 const headlessMode = document.getElementById('headless-mode');
 const agentGoal = document.getElementById('agent-goal');
@@ -130,9 +131,13 @@ function runAgent(event) {
     `;
     
     // Determine WebSocket URL
-    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    const host = window.location.host || 'localhost:8000';
-    const wsUrl = `${protocol}//${host}/ws/run`;
+    let wsUrl = (backendUrl && backendUrl.value.trim()) ? backendUrl.value.trim() : '';
+    if (!wsUrl) {
+        const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+        const protocol = isLocalhost ? (window.location.protocol === 'https:' ? 'wss:' : 'ws:') : 'ws:';
+        const host = isLocalhost ? window.location.host : 'localhost:8000';
+        wsUrl = `${protocol}//${host}/ws/run`;
+    }
     
     try {
         socket = new WebSocket(wsUrl);
