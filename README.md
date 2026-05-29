@@ -24,8 +24,8 @@
 3. **开箱即用的多模型兼容**：
    - **Google Gemini**：首选使用 `gemini-3.5-flash` 多模态模型，运行效率高，成本极低。
    - **OpenAI**：兼容 `gpt-5.5-mini` 等多模态大语言模型。
-   - **DeepSeek**：兼容 `deepseek-chat`。
-   - **Anthropic Claude**：兼容 `claude-4-sonnet` 等多模态大语言模型。
+   - **DeepSeek**：兼容 `deepseek-v4-flash` / `deepseek-v4-pro`。
+   - **Anthropic Claude**：兼容 `claude-4.8` 等多模态大语言模型。
 
 ---
 
@@ -102,7 +102,7 @@ INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
 ### 第四步：打开控制台进行操作
 
 1. 用浏览器打开 `http://127.0.0.1:8000`。
-2. **选择 LLM 供应商** 并配置好模型名称（如 `gemini-3.5-flash`、`gpt-5.5-mini` 等）。
+2. **选择 LLM 供应商** 并配置好模型名称（如 `gemini-3.5-flash`、`gpt-5.5-mini`、`deepseek-v4-flash`、`claude-4.8` 等）。
 3. **输入目标网址** (如 `https://wikipedia.org` 或留空) 与 **任务目标**。
    - *示例目标：在维基百科搜索 "Artificial intelligence"，点击第一个链接，并在正文中找出是由谁在何年提出该术语的。*
 4. 点击 **“启动智能体”**。
