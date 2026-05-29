@@ -30,7 +30,7 @@
                 </div>
             </div>
             <div class="header-actions">
-                <a href="https://github.com" target="_blank" class="github-btn" id="btn-github-link">
+                <a href="https://github.com/tom613951/nifty-hubble" target="_blank" class="github-btn" id="btn-github-link">
                     <i class="fa-brands fa-github"></i> GitHub 仓库
                 </a>
             </div>
@@ -38,6 +38,15 @@
 
         <!-- 主体 -->
         <main class="app-main">
+            <!-- 提示横幅 -->
+            <div class="system-notice-banner glass-card">
+                <i class="fa-solid fa-circle-exclamation notice-icon"></i>
+                <div class="notice-content">
+                    <h3>系统历史版本与兼容性特别提示</h3>
+                    <p>本项目主要针对 <strong>山东农业大学 (SDAU) 之前的老正方教务系统</strong> 开发（目前该校已更换升级教务系统，本代码对新系统不再适用）。由于各高校的正方教务系统版本、配置和安全策略不同（如登录验证码校验、参数加密算法等），非此版本系统的学校使用时，需根据实际接口修改 <code>core/grabber.py</code> 中的登录验证逻辑以作适配。</p>
+                </div>
+            </div>
+
             <!-- 左侧：表单配置区域 -->
             <section class="config-section">
                 <div class="card glass-card">

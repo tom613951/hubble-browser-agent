@@ -797,6 +797,61 @@ code {
 }
 
 /* ==========================================================================
+   System Notice Banner
+   ========================================================================== */
+
+.system-notice-banner {
+    grid-column: 1 / -1;
+    padding: 16px 20px;
+    border-radius: var(--card-radius);
+    background: rgba(245, 158, 11, 0.06);
+    border: 1px solid rgba(245, 158, 11, 0.18);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 8px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
+}
+
+.system-notice-banner .notice-icon {
+    font-size: 20px;
+    color: var(--warning);
+    margin-top: 3px;
+    flex-shrink: 0;
+}
+
+.system-notice-banner .notice-content {
+    flex-grow: 1;
+}
+
+.system-notice-banner .notice-content h3 {
+    font-size: 15px;
+    font-weight: 600;
+    color: #fcd34d;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.system-notice-banner .notice-content p {
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: var(--text-secondary);
+}
+
+.system-notice-banner .notice-content p code {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text-primary);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'Fira Code', monospace;
+    font-size: 12px;
+}
+
+/* ==========================================================================
    Light Mode Theme (Follows System Preferences)
    ========================================================================== */
 
@@ -950,6 +1005,30 @@ code {
 
     .markdown-body blockquote p {
         color: #0f172a;
+    }
+
+    /* Light Mode Notice Banner */
+    .system-notice-banner {
+        background: rgba(217, 119, 6, 0.05);
+        border-color: rgba(217, 119, 6, 0.18);
+        box-shadow: 0 4px 30px rgba(15, 23, 42, 0.03);
+    }
+
+    .system-notice-banner .notice-icon {
+        color: #d97706;
+    }
+
+    .system-notice-banner .notice-content h3 {
+        color: #b45309;
+    }
+
+    .system-notice-banner .notice-content p {
+        color: #78350f;
+    }
+
+    .system-notice-banner .notice-content p code {
+        background: rgba(217, 119, 6, 0.08);
+        color: #b45309;
     }
 }
 
