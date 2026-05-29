@@ -3,213 +3,205 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>正方教务抢课脚本在线生成器 | ZF-Grabber Generator</title>
-    <meta name="description" content="一个为正方教务系统设计的通用抢课脚本生成与配置工具。输入教务系统地址和抢课课表即可一键生成高度并发的 Python 抢课脚本。">
+    <title>Nifty-Hubble | AI Browser Automation Agent</title>
+    <!-- Google Fonts: Inter & JetBrains Mono for logs -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- 动态背景特效 -->
-    <div class="bg-glow-container">
-        <div class="glow-orb orb-1"></div>
-        <div class="glow-orb orb-2"></div>
-        <div class="glow-orb orb-3"></div>
-    </div>
+    <div class="stars-bg"></div>
+    <div class="glowing-orb orb-1"></div>
+    <div class="glowing-orb orb-2"></div>
 
     <div class="app-container">
-        <!-- 头部 -->
+        <!-- Header -->
         <header class="app-header">
-            <div class="header-logo">
-                <i class="fa-solid fa-bolt logo-icon"></i>
-                <div class="logo-text">
-                    <h1>ZF-Grabber</h1>
-                    <span>正方教务通用抢课工具</span>
-                </div>
+            <div class="logo">
+                <i class="fa-solid fa-satellite-dish pulse-icon"></i>
+                <h1>NIFTY<span>HUBBLE</span></h1>
+                <span class="badge">WEB AGENT v1.0</span>
             </div>
-            <div class="header-actions">
-                <a href="https://github.com/tom613951/nifty-hubble" target="_blank" class="github-btn" id="btn-github-link">
-                    <i class="fa-brands fa-github"></i> GitHub 仓库
-                </a>
+            <div class="status-bar">
+                <span id="connection-status" class="status-disconnected">
+                    <span class="status-dot"></span> <span class="status-text">未连接</span>
+                </span>
             </div>
         </header>
 
-        <!-- 主体 -->
-        <main class="app-main">
-            <!-- 提示横幅 -->
-            <div class="system-notice-banner glass-card">
-                <i class="fa-solid fa-circle-exclamation notice-icon"></i>
-                <div class="notice-content">
-                    <h3>系统历史版本与兼容性特别提示</h3>
-                    <p>本项目主要针对 <strong>山东农业大学 (SDAU) 之前的老正方教务系统</strong> 开发（目前该校已更换升级教务系统，本代码对新系统不再适用）。由于各高校的正方教务系统版本、配置和安全策略不同（如登录验证码校验、参数加密算法等），非此版本系统的学校使用时，需根据实际接口修改 <code>core/grabber.py</code> 中的登录验证逻辑以作适配。</p>
+        <!-- Main Dashboard -->
+        <main class="dashboard-grid">
+            
+            <!-- Left Panel: Configurations -->
+            <section class="panel glass-panel config-panel">
+                <div class="panel-header">
+                    <i class="fa-solid fa-sliders text-cyan"></i>
+                    <h2>智能体配置</h2>
                 </div>
-            </div>
-
-            <!-- 左侧：表单配置区域 -->
-            <section class="config-section">
-                <div class="card glass-card">
-                    <div class="card-header">
-                        <h2><i class="fa-solid fa-sliders"></i> 基础配置</h2>
-                        <p>请填写您的学校教务系统信息与登录凭证</p>
-                    </div>
-                    <div class="card-body">
+                <div class="panel-body">
+                    <form id="config-form">
+                        <!-- Provider Selection -->
                         <div class="form-group">
-                            <label for="input-base-url">教务系统 Base URL</label>
+                            <label for="api-provider">LLM 供应商</label>
+                            <div class="select-wrapper">
+                                <select id="api-provider" required>
+                                    <option value="gemini" selected>Google Gemini</option>
+                                    <option value="openai">OpenAI</option>
+                                    <option value="deepseek">DeepSeek</option>
+                                    <option value="anthropic">Anthropic Claude</option>
+                                </select>
+                                <i class="fa-solid fa-chevron-down"></i>
+                            </div>
+                        </div>
+
+                        <!-- API Key -->
+                        <div class="form-group" id="api-key-group">
+                            <label for="api-key">API Key</label>
                             <div class="input-wrapper">
-                                <i class="fa-solid fa-link input-icon"></i>
-                                <input type="url" id="input-base-url" placeholder="如 http://xjw.sdau.edu.cn" value="">
+                                <i class="fa-solid fa-key input-icon"></i>
+                                <input type="password" id="api-key" placeholder="输入您的 API 密钥..." />
                             </div>
+                            <span class="form-tip">留空则优先使用系统环境变量</span>
                         </div>
 
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="input-username">学号 / 用户名</label>
-                                <div class="input-wrapper">
-                                    <i class="fa-solid fa-user input-icon"></i>
-                                    <input type="text" id="input-username" placeholder="请输入学号" value="">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="input-password">密码</label>
-                                <div class="input-wrapper">
-                                    <i class="fa-solid fa-lock input-icon"></i>
-                                    <input type="password" id="input-password" placeholder="请输入教务系统密码" value="">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="input-xkxnm">学年 (xkxnm)</label>
-                                <div class="input-wrapper">
-                                    <i class="fa-solid fa-calendar input-icon"></i>
-                                    <input type="text" id="input-xkxnm" placeholder="如 2024" value="">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="input-xkxqm">学期 (xkxqm)</label>
-                                <div class="input-wrapper">
-                                    <i class="fa-solid fa-clock-rotate-left input-icon"></i>
-                                    <select id="input-xkxqm">
-                                        <option value="3">上学期 (3)</option>
-                                        <option value="12" selected>下学期 (12)</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
+                        <!-- Model Name -->
                         <div class="form-group">
-                            <label for="input-retry-delay">请求重试间隔 (秒)</label>
+                            <label for="model-name">模型名称</label>
                             <div class="input-wrapper">
-                                <i class="fa-solid fa-gauge-high input-icon"></i>
-                                <input type="number" id="input-retry-delay" step="0.1" min="0.1" value="1.0">
+                                <i class="fa-solid fa-brain input-icon"></i>
+                                <input type="text" id="model-name" value="" placeholder="例如: gemini-3.5-flash, gpt-5.5" required />
                             </div>
                         </div>
+
+                        <!-- Target URL -->
+                        <div class="form-group">
+                            <label for="target-url">初始目标网址</label>
+                            <div class="input-wrapper">
+                                <i class="fa-solid fa-globe input-icon"></i>
+                                <input type="url" id="target-url" placeholder="https://example.com (可选)" />
+                            </div>
+                        </div>
+
+                        <!-- Max Steps -->
+                        <div class="form-group">
+                            <label for="max-steps">最大步数限制</label>
+                            <div class="input-wrapper">
+                                <i class="fa-solid fa-shoe-prints input-icon"></i>
+                                <input type="number" id="max-steps" min="1" max="100" value="15" required />
+                            </div>
+                        </div>
+
+                        <!-- Options -->
+                        <div class="form-row-checkboxes">
+                            <label class="checkbox-container">
+                                <input type="checkbox" id="headless-mode" checked>
+                                <span class="checkmark"></span>
+                                无头模式 (隐藏浏览器)
+                            </label>
+                        </div>
+
+                        <!-- Goal Prompt -->
+                        <div class="form-group">
+                            <label for="agent-goal">执行任务目标 (自然语言)</label>
+                            <textarea id="agent-goal" placeholder="输入您想让智能体完成的网页操作任务...&#10;例如：在维基百科搜索'人工智能'，点击第一个链接，并总结第一段。" required></textarea>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="btn-group">
+                            <button type="submit" id="btn-run" class="btn btn-primary">
+                                <i class="fa-solid fa-play"></i> 启动智能体
+                            </button>
+                            <button type="button" id="btn-stop" class="btn btn-danger" disabled>
+                                <i class="fa-solid fa-stop"></i> 停止
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Middle Panel: Live View & Internal State -->
+            <section class="panel glass-panel live-panel">
+                <div class="panel-header">
+                    <i class="fa-solid fa-eye text-magenta"></i>
+                    <h2>实时网页视图</h2>
+                    <div class="step-badge-container">
+                        <span id="current-step-badge" class="step-badge">IDLE</span>
                     </div>
                 </div>
-
-                <!-- 抢课课表 -->
-                <div class="card glass-card tasks-card">
-                    <div class="card-header flex-header">
-                        <div>
-                            <h2><i class="fa-solid fa-list-check"></i> 抢课列表</h2>
-                            <p>添加需要并发抢课的目标课程配置</p>
+                <div class="panel-body flex-column">
+                    <!-- Browser Live Feed -->
+                    <div class="browser-viewport-container">
+                        <div class="browser-header">
+                            <div class="browser-dots">
+                                <span class="dot red"></span>
+                                <span class="dot yellow"></span>
+                                <span class="dot green"></span>
+                            </div>
+                            <div class="browser-address" id="browser-address-text">about:blank</div>
+                            <div class="browser-reload"><i class="fa-solid fa-rotate-right"></i></div>
                         </div>
-                        <button type="button" class="btn btn-primary-outline" id="btn-add-task">
-                            <i class="fa-solid fa-plus"></i> 添加课程
-                        </button>
+                        <div class="browser-screen-wrapper">
+                            <img id="live-screenshot" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='60' viewBox='0 0 100 60'><rect width='100' height='60' fill='%2312131a'/><text x='50' y='30' font-family='sans-serif' font-size='4' fill='%23555' text-anchor='middle'>等待智能体启动...</text></svg>" alt="Live browser viewport" />
+                            <div class="screen-loader" id="screen-loader" style="display: none;">
+                                <div class="spinner"></div>
+                                <span id="loader-text">智能体正在思考...</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="card-body">
-                        <div id="tasks-container" class="tasks-container">
-                            <!-- 动态任务条目将插入这里 -->
+
+                    <!-- Agent Thoughts -->
+                    <div class="thought-card">
+                        <div class="thought-card-header">
+                            <i class="fa-solid fa-lightbulb text-yellow"></i>
+                            <h3>智能体思考过程 (Thought)</h3>
                         </div>
-                        <div id="empty-state" class="empty-state">
-                            <i class="fa-solid fa-graduation-cap empty-icon"></i>
-                            <p>目前还没有添加任何抢课任务，点击“添加课程”开始配置。</p>
+                        <div class="thought-content" id="agent-thought">
+                            等待启动... 启动后，这里将实时渲染智能体每一步的分析、计划与决策路径。
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- 右侧：生成与代码预览 -->
-            <section class="preview-section">
-                <div class="card glass-card code-preview-card">
-                    <div class="card-header tabs-header">
-                        <div class="preview-tabs">
-                            <button type="button" class="tab-btn active" data-tab="tab-config" id="tab-btn-config">
-                                <i class="fa-solid fa-file-code"></i> config.json
-                            </button>
-                            <button type="button" class="tab-btn" data-tab="tab-grabber" id="tab-btn-grabber">
-                                <i class="fa-brands fa-python"></i> grabber.py
-                            </button>
-                            <button type="button" class="tab-btn" data-tab="tab-readme" id="tab-btn-readme">
-                                <i class="fa-solid fa-circle-info"></i> 运行指南
-                            </button>
+            <!-- Right Panel: Console Logs & Output -->
+            <section class="panel glass-panel output-panel">
+                <div class="panel-header">
+                    <i class="fa-solid fa-terminal text-green"></i>
+                    <h2>执行日志与结果</h2>
+                </div>
+                <div class="panel-body flex-column">
+                    <!-- Terminal Console -->
+                    <div class="terminal-container">
+                        <div class="terminal-header">
+                            <span>console_logs.log</span>
+                            <button id="btn-clear-logs" class="btn-icon" title="清除日志"><i class="fa-solid fa-trash-can"></i></button>
                         </div>
-                        <div class="preview-actions">
-                            <button type="button" class="btn btn-secondary btn-sm" id="btn-copy-code" title="复制当前代码">
-                                <i class="fa-regular fa-copy"></i> 复制
-                            </button>
-                            <button type="button" class="btn btn-primary btn-sm" id="btn-download-file" title="下载当前文件">
-                                <i class="fa-solid fa-download"></i> 下载
-                            </button>
+                        <div class="terminal-body" id="terminal-logs">
+                            <div class="log-line system-log">[SYSTEM] 准备就绪。请输入配置并点击“启动智能体”开始运行。</div>
                         </div>
                     </div>
-                    <div class="card-body no-padding">
-                        <!-- config.json 预览 -->
-                        <div class="tab-content active" id="tab-config">
-                            <pre><code class="language-json" id="code-config-json"></code></pre>
-                        </div>
-                        <!-- grabber.py 预览 -->
-                        <div class="tab-content" id="tab-grabber">
-                            <pre><code class="language-python" id="code-grabber-py"></code></pre>
-                        </div>
-                        <!-- readme 预览 -->
-                        <div class="tab-content readme-content" id="tab-readme">
-                            <div class="markdown-body">
-                                <h3>🚀 抢课程序运行指南</h3>
-                                <p>生成的项目包括两部分：<code>grabber.py</code>（核心运行引擎）与 <code>config.json</code>（包含登录凭证与抢课课程）。</p>
-                                
-                                <h4>1. 环境搭建</h4>
-                                <p>抢课脚本需要 Python 3.8+ 环境，并安装以下依赖：</p>
-                                <pre><code class="language-bash">pip install -r requirements.txt</code></pre>
-                                <p>或者手动安装核心依赖：</p>
-                                <pre><code class="language-bash">pip install requests ddddocr</code></pre>
-                                <blockquote>
-                                    <strong>注意：</strong><code>ddddocr</code> 库在安装时可能需要编译器环境，如果在 M1/M2 Mac 上，需要通过 Rosetta 终端运行，或者配置对应的 ARM 库支持。
-                                </blockquote>
 
-                                <h4>2. 配置文件配置</h4>
-                                <p>直接修改下载下来的 <code>config.json</code>，可以在其中更改密码、重试频率或课程任务，无需修改 Python 核心代码。</p>
-
-                                <h4>3. 启动运行</h4>
-                                <p>将 <code>grabber.py</code> 和 <code>config.json</code> 置于同一目录下，然后在终端中执行：</p>
-                                <pre><code class="language-bash">python grabber.py</code></pre>
-                                <p>程序会自动识别验证码进行登录，当登录失效或重试时会自动重试。成功登录后，所有配置的抢课任务将<b>在独立的子线程中并发执行</b>，直到所有课程抢课成功后，自动退出。</p>
+                    <!-- Final Deliverable Card -->
+                    <div class="deliverable-card">
+                        <div class="deliverable-header">
+                            <i class="fa-solid fa-clipboard-check text-cyan"></i>
+                            <h3>最终任务结果</h3>
+                        </div>
+                        <div class="deliverable-body" id="final-result">
+                            <div class="result-placeholder">
+                                <i class="fa-solid fa-circle-info"></i>
+                                <span>任务完成后，智能体提取出的最终结论或数据将呈现在此处。</span>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <!-- 打包下载 -->
-                <div class="download-action-box">
-                    <button type="button" class="btn btn-gradient btn-lg" id="btn-download-all">
-                        <i class="fa-solid fa-file-zipper"></i> 一键下载完整项目包 (ZIP)
-                    </button>
-                </div>
             </section>
+
         </main>
-
-        <!-- 脚注 -->
-        <footer class="app-footer">
-            <p>&copy; 2026 ZF-Grabber Project. 本工具仅供学术交流与技术分享，请勿用于商业用途或对教务系统进行恶意攻击。</p>
-        </footer>
     </div>
-
-    <!-- JS dependencies for Zip generation -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    
     <script src="app.js"></script>
 </body>
 </html>

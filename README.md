@@ -1,44 +1,53 @@
-# ZF-Grabber (正方教务系统通用抢课工具)
+# Nifty-Hubble: Visual AI Web Automation Agent
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Python Version](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
-[![Platform Support](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey.svg)]()
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![Python Version](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
+[![Playwright](https://img.shields.io/badge/Playwright-Supported-green.svg)](https://playwright.dev/)
 
-一个为高校正方教务管理系统（新/老版本通用接口）设计的并发多线程抢课工具，并带有开箱即用的前端可视化脚本生成器。支持动态验证码识别与选课控制（`xkkz_id`）动态提取。
+**Nifty-Hubble** 是一个基于 **Python + Playwright + FastAPI** 开发的**可视化智能网页自动化智能体 (Visual AI Browser Agent)**。它能够解析自然语言任务目标，自主决定并执行浏览器动作（包括导航、滚动、输入、点击、选择、等待等），最终抽取您所需要的数据或总结任务结果。
 
-> **📌 历史版本说明：** 本项目主要以山东农业大学（SDAU）之前的老正方教务系统为例进行开发，该校目前已经更换了教务系统，本代码已无法直接用于该校新系统，但作为正方教务通用选课接口的抢课程序，其逻辑仍具有极高的技术参考与学习价值。
+项目配备了一个**极具科技感、毛玻璃暗黑主题 (Glassmorphism)** 的前端交互式 Web UI 控制台。您可以通过它输入指令，实时查看智能体每一步的思考链 (Thought)、执行的操作 (Action)，以及浏览器视图在操作过程中的实时画面更新。
 
-> **⚠️ 免责声明：** 
-> 本项目仅供技术交流与学术研究使用。请勿将此工具用于任何商业用途，请勿对任何高校教务系统进行恶意攻击。一切因使用本项目产生的后果（如学号封禁、成绩作废等）由使用者自行承担，作者不承担任何责任。
-
-> **⚠️ 兼容性重要提示：** 
-> 由于全国各高校的正方教务系统版本、配置和二次开发定制不同，**登录阶段的验证码校验方式以及参数加密算法可能存在很大差异**。
-> - 本项目提供的脚本默认针对 **山东农业大学 (SDAU) 之前的老正方教务系统（现已更换升级）** 开发，该校旧系统登录仅需要**普通的图形验证码**，脚本已内置 `ddddocr` 本地自动识别。
-> - 其他高校可能会启用动态短信短信验证、滑块拼图校验，或对密码等字段进行 RSA/AES 等前端强加密。如果您的学校有上述安全策略，需要对应修改 `core/grabber.py` 中的 `login` 部分以实现适配。
+---
 
 ## 🌟 项目亮点
 
-1. **可视化配置生成**：集成了一个极具科技感、响应式且完全在客户端运行的前端 UI (HTML/CSS/JS)，无需搭建复杂的 Node.js 环境，直接双击 `frontend/index.html` 即可运行。
-2. **免硬编码的动态提取**：传统抢课脚本往往需要手动抓包硬编码 `xkkz_id`，且在每次选课开始前该值都会变化。本项目脚本支持从登录重定向页面自动读取和解析所有的选课控制项，动态匹配抢课目标。
-3. **高并发多线程**：通过 `ThreadPoolExecutor` 对每个课程任务派发独立的运行线程。多门课并列开抢，抢中自动退出，极大提升抢课效率与捡漏成功率。
-4. **本地 OCR 识别**：内置 `ddddocr` 模块，无需充值任何第三方打码接口，验证码识别准确率极高，且完全在本地完成。
+1. **视觉交互感知 (Visual Grounding)**：
+   - 智能体采用主流的 DOM 视觉标记方案。在思考前，引擎会自动为当前视图内的所有可见交互元素（按钮、链接、输入框、下拉框）打上临时的粉红色数字标签。
+   - 大模型（支持 Gemini 与 OpenAI）结合**视觉截图**与**标记元素列表**，能精准点对点地执行点击和输入指令，规避了传统 CSS 选择器经常失效或多级嵌套导致的解析不准问题。
+
+2. **极具科技感的毛玻璃前端控制台**：
+   - 完全响应式的 Glassmorphism 布局设计。
+   - 实时双向通信：基于 WebSocket，秒级更新智能体心智日志（Thought、Action、Observation）与浏览器无头窗口当前画面截图。
+   - 提供可视化操作选项：允许选择 LLM 供应商、动态填入 API 密钥、调节最大执行步数限制、开启/关闭无头渲染等。
+
+3. **开箱即用的多模型兼容**：
+   - **Google Gemini**：首选使用 `gemini-2.5-flash` 多模态模型，运行效率高，成本极低。
+   - **OpenAI**：兼容 `gpt-4o` / `gpt-4o-mini` 多模态大语言模型。
+   - **Ollama (本地模型)**：支持指向本地部署的视觉多模态大模型进行本地离线执行。
+
+4. **历史存档保留**：
+   - 本项目之前版本的“正方教务抢课脚本及配置生成器 (ZF-Grabber)”已被完整备份迁移至 [legacy/zf-grabber](file:///C:/Users/26503/Documents/antigravity/nifty-hubble/legacy/zf-grabber/) 文件夹下，供需要学习正方教务系统选课接口机制的开发者参考。
 
 ---
 
 ## 📁 目录结构
 
-```
-├── core/
-│   ├── grabber.py         # 核心抢课脚本引擎
-│   ├── config.json         # 示例配置文件 (存储个人信息与抢课列表)
-│   └── requirements.txt    # Python 依赖项声明
+```text
+├── backend/
+│   ├── main.py            # FastAPI WebSocket 服务器 (静态资源托管与通信逻辑)
+│   ├── agent.py           # 智能体核心逻辑 (Playwright 驱动、DOM 标注器、LLM 思考循环)
+│   └── requirements.txt   # Python 依赖依赖库声明
 │
 ├── frontend/
-│   ├── index.html         # 前端可视化页面主入口
-│   ├── style.css          # 毛玻璃科技感暗黑主题样式
-│   └── app.js             # 前端脚本打包与生成核心逻辑
+│   ├── index.html         # 科技感 Web 控制台主页
+│   ├── style.css          # Glassmorphism/Dark 样式文件
+│   └── app.js             # WebSocket 客户端状态管理与渲染逻辑
 │
-├── README.md              # 项目中文说明
+├── legacy/
+│   └── zf-grabber/        # 归档的 ZF-Grabber (正方教务抢课) 项目历史版本
+│
+├── README.md              # 本说明文档
 └── LICENSE                # MIT 开源协议
 ```
 
@@ -46,57 +55,75 @@
 
 ## 🚀 快速开始
 
-### 第一步：生成您的配置
+### 第一步：克隆仓库并安装依赖
 
-1. 进入 `frontend/` 文件夹，双击 `index.html` 即可在浏览器中打开配置生成器。
-2. 输入您的**教务系统 URL**（如山东农业大学为 `http://xjw.sdau.edu.cn`）、**学号**、**密码**、学年、学期和重试间隔。
-3. 在页面中添加您需要选的所有课程（填入**课程 ID `kch_id`**，通常为一串字母/数字或UUID）。如果想要精准匹配特定老师或上课时间，可填写过滤规则。
-4. 点击 **“一键下载完整项目包 (ZIP)”**。下载解压后即可得到包含完整代码、配置和 README 的运行文件夹。
-
-### 第二步：配置本地 Python 环境
-
-解压下载的项目文件后，在当前目录打开终端，安装项目所需的库依赖：
+在项目根目录下打开终端，安装项目所需的 Python 库依赖：
 
 ```bash
-pip install -r requirements.txt
+pip install -r backend/requirements.txt
 ```
 
-> **提示：** `ddddocr` 在苹果 M 系列 (M1/M2/M3) 芯片的 macOS 上安装可能会提示依赖问题。苹果用户可以通过安装 Rosetta 转译的 Python 环境运行，或将终端设为以 Rosetta 打开后再进行依赖安装。
-
-### 第三步：启动抢课
-
-在配置好 `config.json` 后，在终端中直接运行核心脚本：
+接下来，安装 **Playwright** 所需的浏览器内核驱动（该步骤会自动下载并配置 Chromium）：
 
 ```bash
-python grabber.py
+playwright install
 ```
 
-终端将打印如下运行日志：
+### 第二步：配置 API 密钥 (可选)
+
+您可以在本地创建一个 `.env` 文件，或直接将您的 API 密钥配置进系统环境变量，这样在使用网页控制台时无需重复输入密钥：
+
+```env
+# 若使用 Google Gemini (推荐)
+GEMINI_API_KEY=your_gemini_api_key_here
+
+# 若使用 OpenAI
+OPENAI_API_KEY=your_openai_api_key_here
+```
+
+*注意：如果您不在环境变量中配置，也可以直接在运行网页后的前端界面输入框中手动填写 API Key。*
+
+### 第三步：运行后端服务
+
+在项目根目录下运行 FastAPI 服务：
+
+```bash
+python -m uvicorn backend.main:app
+```
+
+> **💡 Windows 环境提示：** 
+> 在 Windows 系统上，Playwright 要求 asyncio 使用 `ProactorEventLoop` 才能正常唤起浏览器子进程。然而，Uvicorn 在开启 `--reload` 自动重载模式下，会强行将事件循环切换为不支持子进程的 `SelectorEventLoop`，从而引发 `NotImplementedError` 错误。
+>
+> 我们已在 `backend/main.py` 的首行加入了显式的事件循环策略修复代码。但为了保持最佳的运行稳定性，在 Windows 上建议**不要加 `--reload` 参数**启动服务。
+
+终端将输出服务运行地址，例如：
 ```text
-[10:15:00] MainThread: 成功从 config.json 加载配置。
-[10:15:01] MainThread: 开始尝试登录正方教务系统...
-[10:15:02] MainThread: 用户 2024217038 登录成功！
-[10:15:02] MainThread: 正在获取选课类型与选课控制ID (xkkz_id)...
-[10:15:03] MainThread: 成功获取选课控制映射表: {'15': '3CF4DF7351AC4E6EE0634188C2CAEFAA', '10': '9696E6E61D1E6183E0536785C2CADAB2'}
-[10:15:03] MainThread: 开始运行抢课任务，任务数量: 2
-[10:15:03] GrabTask_0: 【大学体育 (郑亮)】抢课线程已启动 (课程代码: XT108005)
-[10:15:03] GrabTask_1: 【通识课 (经济学)】抢课线程已启动 (课程代码: 9696E6E61D1E6183E0536785C2CADAB2)
-[10:15:04] GrabTask_0: 【大学体育 (郑亮)】提交结果: {"flag":"-1","msg":"人数已满"}
-[10:15:05] GrabTask_1: 🎉【通识课 (经济学)】抢课成功！教师: 张华, 时间: 星期六第7-8节{1-8周}
+INFO:     Started server process [12345]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
 ```
+
+### 第四步：打开控制台进行操作
+
+1. 用浏览器打开 `http://127.0.0.1:8000`。
+2. **选择 LLM 供应商** 并配置好模型名称（默认为 Google Gemini 与 `gemini-2.5-flash`）。
+3. **输入目标网址** (如 `https://wikipedia.org` 或留空) 与 **任务目标**。
+   - *示例目标：在维基百科搜索 "Artificial intelligence"，点击第一个链接，并在正文中找出是由谁在何年提出该术语的。*
+4. 点击 **“启动智能体”**。
+5. 控制台将动态弹出进度，您能看见智能体屏幕在实时增加红粉色交互标签，并进行点击、键盘输入，右侧控制台会滚屏展示智能体每步推理的 Thought 以及动作，最终结果将渲染在“最终任务结果”卡片中。
 
 ---
 
-## 🛠️ 常见问题
+## 🛠️ 技术原理简介
 
-- **Q: 为什么提示没有 `csrftoken`？**
-  - **A:** 请检查教务系统基础 URL 是否填写正确，通常应该以 `http://` 或 `https://` 开头，且只到主域名即可，脚本会自动拼装对应的登录路径。另外，请确认您的校园网是否正常连接。
-
-- **Q: 为什么一直提示“登录失败”？**
-  - **A:** 通常是因为您的学号或密码有误，或者系统开启了验证码滑块等更复杂的安全机制。本工具适用于标准的验证码表单。
-
-- **Q: 课程的 `kch_id` 和类型代码 `kklxdm` 从哪里看？**
-  - **A:** 登录教务系统进入选课页面后，按 F12 打开浏览器控制台。在页面点击某一课程类型标签（如通识课、体育课），查看控制台中的网络请求（Fetch/XHR），可以找到包含 `kklxdm` 的参数。课程 ID 通常可以在课程列表接口返回的 JSON 中找到。
+1. **DOM 节点遍历与过滤**：在每次决策前，后端会在当前页面执行定制的 Javascript 脚本，提取可视、尺寸大于零、处于当前视口内的 `a, button, input, select, textarea` 等强交互元素。
+2. **视觉绑定 (Visual Badging)**：给每个交互元素生成对应 ID 的粉色角标贴在元素边缘，接着给浏览器当前有角标的页面拍摄一张 PNG 截图。
+3. **闭环决策控制 (ReAct Loop)**：
+   - 大模型读取该带角标的截图以及元素文本元数据。
+   - 大模型进行推理，并生成结构化的 JSON 指令（如 `{"action": {"type": "click", "id": 5}}`）。
+   - 后端清除角标，使用 Playwright 的 Selector 进行实际触发。
+   - 循环执行，直到模型发出 `finish` 指令或超过最大设定步数。
 
 ---
 
