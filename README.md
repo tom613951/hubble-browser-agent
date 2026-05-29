@@ -22,12 +22,10 @@
    - 提供可视化操作选项：允许选择 LLM 供应商、动态填入 API 密钥、调节最大执行步数限制、开启/关闭无头渲染等。
 
 3. **开箱即用的多模型兼容**：
-   - **Google Gemini**：首选使用 `gemini-2.5-flash` 多模态模型，运行效率高，成本极低。
-   - **OpenAI**：兼容 `gpt-4o` / `gpt-4o-mini` 多模态大语言模型。
-   - **Ollama (本地模型)**：支持指向本地部署的视觉多模态大模型进行本地离线执行。
-
-4. **历史存档保留**：
-   - 本项目之前版本的“正方教务抢课脚本及配置生成器 (ZF-Grabber)”已被完整备份迁移至 [legacy/zf-grabber](file:///C:/Users/26503/Documents/antigravity/nifty-hubble/legacy/zf-grabber/) 文件夹下，供需要学习正方教务系统选课接口机制的开发者参考。
+   - **Google Gemini**：首选使用 `gemini-3.5-flash` 多模态模型，运行效率高，成本极低。
+   - **OpenAI**：兼容 `gpt-5.5-mini` 等多模态大语言模型。
+   - **DeepSeek**：兼容 `deepseek-chat`。
+   - **Anthropic Claude**：兼容 `claude-4-sonnet` 等多模态大语言模型。
 
 ---
 
@@ -43,9 +41,6 @@
 │   ├── index.html         # 科技感 Web 控制台主页
 │   ├── style.css          # Glassmorphism/Dark 样式文件
 │   └── app.js             # WebSocket 客户端状态管理与渲染逻辑
-│
-├── legacy/
-│   └── zf-grabber/        # 归档的 ZF-Grabber (正方教务抢课) 项目历史版本
 │
 ├── README.md              # 本说明文档
 └── LICENSE                # MIT 开源协议
@@ -107,7 +102,7 @@ INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
 ### 第四步：打开控制台进行操作
 
 1. 用浏览器打开 `http://127.0.0.1:8000`。
-2. **选择 LLM 供应商** 并配置好模型名称（默认为 Google Gemini 与 `gemini-2.5-flash`）。
+2. **选择 LLM 供应商** 并配置好模型名称（如 `gemini-3.5-flash`、`gpt-5.5-mini` 等）。
 3. **输入目标网址** (如 `https://wikipedia.org` 或留空) 与 **任务目标**。
    - *示例目标：在维基百科搜索 "Artificial intelligence"，点击第一个链接，并在正文中找出是由谁在何年提出该术语的。*
 4. 点击 **“启动智能体”**。
